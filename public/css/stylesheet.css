@@ -1,0 +1,81 @@
+
+html{
+    background-image: url("light_blue_vertical_stripes.jpg");
+    background-attachment: fixed;
+
+}
+
+.header img {
+    float: left;
+    width: 100px;
+    height: 100px;
+}
+.header {
+    background-color: #979A9A;
+    height: 100px;
+}
+/* Navbar design*/
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li{
+    float: left;
+
+}
+
+li a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 16px;
+    color: black;
+}
+
+li a:hover{
+    background-color: #F7F9F9;
+}
+
+li a:active{
+    background-color: #F7F9F9;
+}
+
+/*End navbar design*/
+#slides img{
+	display:none;
+	float:right;
+        
+}
+#slides .slide img{
+    height:30px;
+    width:30px;
+    margin: auto;
+}
+p{
+    font-size: 1em;
+
+}
+h3{
+    text-align: center;
+    font-size: 1.6em;
+}
+h4{
+    text-align: center;
+    font-size: 1.3em;
+}
+
+/* the form design*/
+form{
+    text-align: center;
+    width: auto;
+    margin: 0 auto;
+
+    border-color: black;
+    border-style: double;
+    border-width:40px;
+    font: 'Aclonica';
+    font-size: 2em;
+}

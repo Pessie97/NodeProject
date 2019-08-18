@@ -1,0 +1,17 @@
+extends default
+block content
+	form(method="GET" action="/setup")
+        First Name: 
+            input(type="text" name="fname" value='')
+        Last Name:
+            input(type="text" name="lname" value='')
+        Phone Number:
+            input(type="number" name="phone" value='')
+        Email Address:
+            input(type="email" name="email" value='')
+        Password:
+            input(type="password" name="password" value='')
+		Confirm Password:
+            input(type="password" name="cpassword" value='')
+			
+        input(type='submit', value='Submit')
