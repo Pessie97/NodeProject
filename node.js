@@ -50,7 +50,7 @@ app.route('/join').get(function(req, res){
 	title:'Sign Up';
 });
 
-app.post('/info').get(function(req,res){
+app.get('/info' ,( req,res) =>{
 	res.send('DB Info');
 	title:'DB Info';
 	
@@ -65,12 +65,22 @@ app.post('/info').get(function(req,res){
   if (err) throw err;
   else{
   console.log("Connected!");
+  var sql="select * from userinfo where userid = (select max(userid) from userinfo)";
+  console.log("sql " + sql);
+  con.query(sql,  (error, results)=> {
+            if (error) {
+			console.log(error);
+			res.json({"error":true});
+			throw error;}
+			else{
+				console.log(results);
+				res.json(results);
+			}
+            
+          });
   }
-  
-  var sql="select top 1 * from userinfo order by userid";
-  
-	
-}
+});
+});
 
 app.post('/setup' (req, res) => {
 	join(req.body.fname,req.body.lname,req.body.email,req.body.password,req.body.phone );
