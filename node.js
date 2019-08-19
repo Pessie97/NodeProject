@@ -10,11 +10,14 @@ app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 
 //start home page
-app.get(['/', '/home'], (req, res) =>{
+
+
+app.get(['/','/home'], (req, res) =>{
     res.render('home', {
         title: 'Home'
     });
 });
+
 //go to about page
 app.get('/about', (req, res) =>{
     res.render('about', {
@@ -35,7 +38,7 @@ app.get('/about', (req, res) =>{
     res.render('confirmation', {
         title: 'Confirmation',
         name: req.body.name,
-        number: req.body.phoneNumber
+        
 
     });
 });
@@ -45,6 +48,33 @@ app.get('/about', (req, res) =>{
 app.route('/join').get(function(req, res){
 	res.send('Sign up');
 	title:'Sign Up';
+});
+
+app.post('/info').get(function(req,res){
+	res.send('DB Info');
+	title:'DB Info';
+	
+	var con = mysql.createConnection({
+  host: "localhost",
+  port: 3308,
+  user: "root",
+  password: "",
+  database: "finalproject"
+});
+	con.connect(function(err) {
+  if (err) throw err;
+  else{
+  console.log("Connected!");
+  }
+  
+  var sql="select top 1 * from userinfo order by userid";
+  
+	
+}
+
+app.post('/setup' (req, res) => {
+	join(req.body.fname,req.body.lname,req.body.email,req.body.password,req.body.phone );
+	res.redirect('/info')
 });
 
 	//var server = app.listen(8080, function(){});
@@ -79,7 +109,7 @@ function sendEmail(emailAdd){
     });
 }
 
-function join(){
+function join(fname, lname, email, pword, phone){
 	var con = mysql.createConnection({
   host: "localhost",
   port: 3308,
@@ -94,11 +124,11 @@ function join(){
   }
   
   var sql = "insert into userinfo (  UserFName, UserLName, UserName, UserEmail, UserPassword, UserPhoneNumber) "+
-	"values( '"+req.body.fname +"', '"+req.body.lname"','"+req.body.email"', '"+req.body.email"', '"+req.body.password"', '"+req.body.phone"')";
+	"values( '"+fname +"', '"+lname"','"+email"', '"+email"', '"+pword"', '"+phone"')";
 	console.log ("sql" + sql);
 	con.query(sql, function (error, results, fields) {
             if (error) throw error;
-            res.redirect('/classes');
+            res.redirect('/info');
           });
 	});
 
