@@ -42,12 +42,12 @@ app.get('/about', (req, res) =>{
 });
 
 app.get('/join', (req, res) =>{
-	res.send('Sign up');
+	res.render('join');
 	title:'Sign Up';
 });
 
 app.get('/info' ,( req,res) =>{
-	res.send('DB Info');
+	res.render('info');
 	title:'DB Info';
 	
 	var con = mysql.createConnection({
@@ -68,7 +68,7 @@ app.get('/info' ,( req,res) =>{
             if (error) {
 			console.log(error);
 			res.json({"error":true});
-			throw error;
+			//throw error;
 			}
 			else{
 				console.log(results);
@@ -85,8 +85,28 @@ app.get('/setup' (req, res) => {
 	res.redirect('/info')
 });
 */
-app.post('/setup', (req, res) => {
-    join(req.body.fname,req.body.lname,req.body.email,req.body.password,req.body.phone );
+app.get('/setup', (req, res) => {
+    var con = mysql.createConnection({
+  host: "localhost",
+  port: 3308,
+  user: "root",
+  password: "",
+  database: "finalproject"
+});
+	con.connect(function(err) {
+  if (err) throw err;
+  else{
+  console.log("Connected!");
+  }
+  
+  var sql = "insert into userinfo (  UserFName, UserLName, UserName, UserEmail, UserPassword, UserPhoneNumber) "+
+	"values( '"+req.body.fname +"', '"+req.body.lname+"','"+req.body.email+"', '"+req.body.email+"', '"+req.body.password+"', '"+req.body.phone+"')";
+	console.log ("sql" + sql);
+	con.query(sql, function (error, results, fields) {
+            if (error) throw error;
+            res.redirect('/info');
+          });
+	});
 	res.redirect('/info');
 });
 

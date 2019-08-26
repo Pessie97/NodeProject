@@ -8,22 +8,17 @@ html
 	body
     
 		block header
-			header.page_title
+			header.header
 				img(src='/pictures/logo.png' alt='logo')
-				|  #{title}
 			ul.menu1
-				li
-					a(href=`/home`).
-					Home
-				li
-					a(href=`/join`).
-					Join
-				li
-					a(href = `/about`).
-					About
-           
-				li
-					a(href= `/contactus`).
-					Contact
+				li 
+					a(href='/home') Home	
+				li 
+					a(href='/join') Join	
+				li 
+					a(href = '/about') About
+				li 
+					a(href= '/contactus') Contact
+					
 		block content
 		
