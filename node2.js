@@ -86,15 +86,8 @@ app.get('/setup' (req, res) => {
 });
 */
 app.post('/setup', (req, res) => {
-    //Send them a confirmation email
-    sendEmail(req.body.email);
-    console.log(req.name);
-    res.render('confirmation', {
-        title: 'Confirmation',
-        name: req.body.name,
-        
-
-    });
+    join(req.body.fname,req.body.lname,req.body.email,req.body.password,req.body.phone );
+	res.redirect('/info');
 });
 
 
