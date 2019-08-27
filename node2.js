@@ -31,7 +31,7 @@ app.get('/about', (req, res) =>{
  
  app.post('/submitContact', (req, res) => {
     //Send them a confirmation email
-    sendEmail(req.body.email);
+    sendEmail(req.body.email, req.body.fname);
     console.log(req.name);
     res.render('confirmation', {
         title: 'Confirmation',
@@ -64,7 +64,7 @@ app.get('/setup' (req, res) => {
 	res.redirect('/info')
 });
 */
-app.get('/setup', (req, res) => {
+app.post('/setup', (req, res) => {
     var con = mysql.createConnection({
   host: "localhost",
   port: 3308,
@@ -95,7 +95,7 @@ const server = app.listen(8080, () => {
 });
 
 
-function sendEmail(emailAdd){
+function sendEmail(emailAdd, fname){
     var transport = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -108,7 +108,7 @@ function sendEmail(emailAdd){
         from: 'schusterchaya@gmail.com', 
         to: emailAdd,
         subject: 'Contact Confirmation', 
-        html: 'Thank you for reaching out to us. Someone will get back to you as soon as possible'
+        html: 'Thank you for reaching out to us. Someone will get back to you as soon as possible' +fname
     };
 
     transport.sendMail(mailOptions, function(error, info){
