@@ -2,5 +2,23 @@ extends default
 block content
 	
 	div.dbinfo
+	
+	.page_content
+	-var info = [];
+	-info = list;
+	-var numbers = [1, 2, 3];
+	table.schedule
+		tr
+			th User First Name
+			th User Last Name
+			th Email
+			th Phone Number  
+	each c in info
+		tr
+			td=c.fname
+			td=c.lname
+			td=c.email
+			td=c.phone
+	
 		
 		

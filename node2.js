@@ -35,8 +35,8 @@ app.get('/about', (req, res) =>{
     console.log(req.name);
     res.render('confirmation', {
         title: 'Confirmation',
-        name: req.body.name,
-        
+        fname: req.body.fname,
+		lname:req.body.lname
 
     });
 });
@@ -47,37 +47,16 @@ app.get('/join', (req, res) =>{
 });
 
 app.get('/info' ,( req,res) =>{
-	res.render('info');
-	title:'DB Info';
 	
-	var con = mysql.createConnection({
-  host: "localhost",
-  port: 3308,
-  user: "root",
-  password: "",
-  database: "finalproject"
-});
-	con.connect(function(err) {
-  if (err) 
-	  throw err;
-  else{
-  console.log("Connected!");
-  var sql="select * from userinfo where userid = (select max(userid) from userinfo)";
-  console.log("sql " + sql);
-  con.query(sql,  (error, results)=> {
-            if (error) {
+	try{
+            var allUsers = [];
+            getUsers(allUsers,res);
+        }
+        catch(error){
+            console.log('error with database!');
 			console.log(error);
-			res.json({"error":true});
-			//throw error;
-			}
-			else{
-				console.log(results);
-				res.json(results);
-				}
-            
-			});
-		}
-	});
+        } 
+	
 });
 /*
 app.get('/setup' (req, res) => {
@@ -107,7 +86,7 @@ app.get('/setup', (req, res) => {
             res.redirect('/info');
           });
 	});
-	res.redirect('/info');
+	
 });
 
 
@@ -129,7 +108,7 @@ function sendEmail(emailAdd){
         from: 'schusterchaya@gmail.com', 
         to: emailAdd,
         subject: 'Contact Confirmation', 
-        html: 'Hi there! <br> This is a confirmation email for your requested phone call <br> One of our dedicated advisors will be calling you shortly.<br>Looking forward to speaking with you, <br>The New College'
+        html: 'Thank you for reaching out to us. Someone will get back to you as soon as possible'
     };
 
     transport.sendMail(mailOptions, function(error, info){
@@ -142,27 +121,54 @@ function sendEmail(emailAdd){
     });
 }
 
-function join(fname, lname, email, pword, phone){
-	var con = mysql.createConnection({
-  host: "localhost",
-  port: 3308,
-  user: "root",
-  password: "",
-  database: "finalproject"
-});
-	con.connect(function(err) {
-  if (err) throw err;
-  else{
-  console.log("Connected!");
-  }
-  
-  var sql = "insert into userinfo (  UserFName, UserLName, UserName, UserEmail, UserPassword, UserPhoneNumber) "+
-	"values( '"+fname +"', '"+lname+"','"+email+"', '"+email+"', '"+pword+"', '"+phone+"')";
-	console.log ("sql" + sql);
-	con.query(sql, function (error, results, fields) {
-            if (error) throw error;
-            res.redirect('/info');
-          });
-	});
 
+
+function getUsers(info, res){
+    var con = mysql.createConnection({
+	host: "localhost",
+	port: 3308,
+	user: "root",
+	password: "",
+	database: "finalproject"
+});
+    con.connect(function(err){
+       
+        if(err) throw err;
+        else{
+            console.log("connected!");
+        }
+        var sql="select * from userinfo where userid = (select max(userid) from userinfo)";
+        con.query(sql, function(err, result, fields){
+            if (err){
+                console.log("error here");
+                console.log("err");
+                throw err;
+            } 
+            for(var i = 0; i < result.length; i++){
+                var User = {
+                    'fname':result[i].UserFName,
+                    'lname':result[i].UserLName,
+                    'email':result[i].UserEmail,
+                    'phone':result[i].UserPhoneNumber,
+                   
+                }
+                info.push(User);
+            }
+            for(var i = 0; i < info.length; i++){
+                console.log(info[i]);
+            }
+            console.log("done looping");
+            
+            res.render('info', {
+                title: 'User listing',
+                list: info
+            });
+        });
+        
+    });
+    
 }
+
+
+  
+	
